@@ -7,6 +7,7 @@ export default function RootLayout() {
 
   return (
     <Stack>
+      {/* Home Page */}
       <Stack.Screen
         name="index"
         options={{
@@ -16,14 +17,25 @@ export default function RootLayout() {
               onPress={() => router.push("/profile")}
               style={{ paddingHorizontal: 4 }}
             >
-              <Ionicons name="person-circle-outline" size={26} color="#000000" />
+              <Ionicons name="person-circle-outline" size={26} color="#000" />
             </TouchableOpacity>
           ),
         }}
       />
+
+      {/* Profile Page */}
       <Stack.Screen
         name="profile"
         options={{ title: "My Data" }}
+      />
+
+      {/* Fill Page */}
+      <Stack.Screen
+        name="fill"
+        options={{
+          title: "Fill Assistant", // <-- now your header shows this instead of "Fill"
+          headerShown: true,      // ensure header is visible
+        }}
       />
     </Stack>
   );
