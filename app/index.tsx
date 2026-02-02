@@ -1,37 +1,46 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [formLink, setFormLink] = useState("");
 
   const handleSubmit = () => {
     if (!formLink.trim()) {
-      alert("Please paste a Google Form link");
+      Alert.alert("Missing Link", "Please paste a Google Form link");
       return;
     }
 
-    console.log("GForm link:", formLink);
-    // later → trigger autofill logic
+    if (!formLink.includes("docs.google.com/forms")) {
+      Alert.alert("Invalid Link", "Please enter a valid Google Form link");
+      return;
+    }
+
+    router.push({
+      pathname: "/fill",
+      params: { formLink },
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Autofill Google Forms</Text>
-      <Text style={styles.description}>
-        Paste your Google Form link below and we’ll fill it using your saved profile.
+      <Text style={styles.title}>FillMyData</Text>
+      <Text style={styles.subtitle}>
+        Paste your Google Form link below
       </Text>
 
       <TextInput
+        style={styles.input}
         placeholder="https://docs.google.com/forms/..."
         value={formLink}
         onChangeText={setFormLink}
-        style={styles.input}
         autoCapitalize="none"
         autoCorrect={false}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Use this Form</Text>
+        <Text style={styles.buttonText}>Open & Fill</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,37 +49,35 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
-    padding: 20,
+    padding: 24,
     justifyContent: "center",
   },
-  heading: {
-    fontSize: 24,
+  title: {
+    fontSize: 28,
     fontWeight: "bold",
-    color: "#000",
-    marginBottom: 8,
+    marginBottom: 6,
   },
-  description: {
-    fontSize: 15,
-    color: "#555",
-    marginBottom: 20,
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 16,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
+    borderRadius: 10,
+    padding: 14,
     fontSize: 16,
     marginBottom: 16,
   },
   button: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: "center",
+    backgroundColor: "#000",
+    padding: 16,
+    borderRadius: 10,
   },
   buttonText: {
     color: "#fff",
+    textAlign: "center",
     fontSize: 16,
     fontWeight: "600",
   },
